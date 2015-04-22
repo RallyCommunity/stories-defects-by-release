@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stories and Defects by Release</title>
+
+    <script type="text/javascript" src="/apps/2.0/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define("CustomApp",{extend:"Rally.app.App",componentCls:"app",launch:function(){this.add({xtype:"rallyreleasecombobox",listeners:{ready:this._onReleasesLoaded,select:this._onReleaseChanged,scope:this}})},_onReleasesLoaded:function(){Ext.create("Rally.data.wsapi.TreeStoreBuilder").build({models:["userstory","defect"],autoLoad:!0,enableHierarchy:!1,filters:[this._getReleseFilter()]}).then({success:this._onStoreBuilt,scope:this})},_onStoreBuilt:function(store){this.add({margin:"10px 0 0 0",xtype:"rallytreegrid",store:store,context:this.getContext(),columnCfgs:["FormattedID","Name","ScheduleState","Owner","Feature"]})},_onReleaseChanged:function(){var treeGrid=this.down("rallytreegrid"),treeStore=treeGrid.getStore();treeStore.clearFilter(!0),treeStore.filter(this._getReleseFilter())},_getReleseFilter:function(){return this.down("rallyreleasecombobox").getQueryFromSelected()}});
+
+            Rally.launchApp('CustomApp', {
+                name:"Stories and Defects by Release",
+	            parentRepos:""
+            });
+
+        });
+    </script>
+
+
+    <style type="text/css">
+        
+    </style>
+</head>
+<body>
+</body>
+</html>
